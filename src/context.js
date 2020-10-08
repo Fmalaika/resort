@@ -8,16 +8,28 @@ class RoomProvider extends Component {
        rooms:[],
        sortedRooms:[],
        featuredRooms: [],
-       loading: true
+       loading: true,
+       type: 'all',
+       capacity: 1,
+       price: 0,
+       minPrice: 0,
+       maxPrice: 0,
+       minSize: 0,
+       maxSize: 0,
+       breakfast: false,
+       pets: false,
+
     };
     componentDidMount(){
         let rooms = this.formatData(items);
         let featuredRooms = rooms.filter(room => room.featured=== true);
+        let maxPrice = Math.max(...rooms.map(item=> item.price));
         this.setState({
             rooms,
             featuredRooms,
             sortedRooms:rooms,
-            loading:false
+            loading:false,
+            maxPrice,
         })
     }
   
@@ -53,4 +65,12 @@ class RoomProvider extends Component {
 }
 
 const RoomConsumer = RoomContext.Consumer;
+
+export function withRoomConsumer(Component){
+    return function ConsumerWrapper(props){
+        return <RoomConsumer>
+            {value => <Component {...props} context={value}/>}
+        </RoomConsumer>
+    }
+}
 export {RoomProvider, RoomConsumer, RoomContext};
