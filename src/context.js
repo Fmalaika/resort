@@ -24,12 +24,15 @@ class RoomProvider extends Component {
         let rooms = this.formatData(items);
         let featuredRooms = rooms.filter(room => room.featured=== true);
         let maxPrice = Math.max(...rooms.map(item=> item.price));
+        let maxSize = Math.max(...rooms.map(item=> item.size));
         this.setState({
             rooms,
             featuredRooms,
             sortedRooms:rooms,
             loading:false,
+            price: maxPrice,
             maxPrice,
+            maxSize,
         })
     }
   
@@ -51,12 +54,45 @@ class RoomProvider extends Component {
         const room= tempRooms.find(room => room.slug === slug);
         return room;
     };
+
+    handleChange = event =>{
+        const target= event.target;
+        const name= event.target.name;
+        const value= event.type ==='checkbox'?event.target.checked: event.target.value;
+        this.setState({
+            [name]: value
+        }, this.filterRooms)
+    }
+
+    filterRooms = () =>{
+        let {
+            rooms,
+            type,
+            capacity,
+            price,
+            minSize,
+            maxSize,
+            breakfast,
+            pets 
+        } = this.state;
+
+        let tempRooms = [...rooms];
+        if(type!=='all'){
+            tempRooms = tempRooms.filter(room => room.type === type)
+        }
+        this.setState({
+            sortedRooms: tempRooms
+        })
+    }
+
+
     render() {
         return (
            <RoomContext.Provider 
            value={{
                ...this.state,
-            getRoom: this.getRoom
+            getRoom: this.getRoom, 
+            handleChange: this.handleChange,
             }}>
                {this.props.children}
            </RoomContext.Provider>
