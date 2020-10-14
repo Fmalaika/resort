@@ -38,18 +38,18 @@ export default class SingleRoom extends Component {
                     </Banner>
                 </StyledHero>
                 <section className="single-room">
-                    <div classname="single-room-iimages">
+                    <div className="single-room-iimages">
                         {defaultImg.map((item, index)=>{
                             return <img key={index} src={item} alt={name} />
                         })}
                     </div>
-                    <div classname="single-room-info">
-                        <article class="desc">
+                    <div className="single-room-info">
+                        <article className="desc">
                             <h3>Details</h3>
                             <p>{description}</p>
 
                         </article>
-                        <article class="info">
+                        <article className="info">
                             <h3>Info</h3>
                             <h6>Price: ${price}</h6>
                             <h6> Size: {size} sq ft</h6>
